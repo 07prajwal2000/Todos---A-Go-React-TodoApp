@@ -1,0 +1,1 @@
+nodemon --exec "go run main.go" --watch ./ -e go,html

@@ -1,0 +1,22 @@
+.c-nav-item {
+    border: 2px solid transparent;
+}
+.c-nav-item:hover {
+    border: 2px solid rgb(125, 166, 255);
+}
+
+.social-btn {
+    width: 2.5rem;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.responsive-form {
+    width: 90%;
+    max-width: 850px;
+}
+@media screen and (min-width: 770px) {
+    .responsive-form {
+        width: 60%;
+    }
+}
