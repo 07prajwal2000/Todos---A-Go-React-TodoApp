@@ -5,9 +5,10 @@ import "github.com/spf13/viper"
 type ConfigKey string
 
 const (
-	JwtSecret ConfigKey = "JWT_SECRET"
-	JwtIssuer ConfigKey = "JWT_ISSUER"
-	JwtExpiry ConfigKey = "JWT_EXP" // In hours
+	JwtSecretKey   ConfigKey = "JWT_SECRET"
+	JwtIssuerKey   ConfigKey = "JWT_ISSUER"
+	JwtExpiryKey   ConfigKey = "JWT_EXP" // In hours
+	DatabaseUrlKey ConfigKey = "DATABASE_URL"
 )
 
 func GetConfig(key ConfigKey) string {

@@ -23,12 +23,11 @@ async function Post(
 	headers: any = null,
 	contentType = "application/json"
 ) {
-	return await fetcher.post(route, {
+	return await fetcher.post(route, body, {
 		headers: {
 			...headers,
 			"Content-Type": contentType,
-		},
-		data: body,
+		}
 	});
 }
 
@@ -38,12 +37,11 @@ async function Put(
 	headers: any = null,
 	contentType = "application/json"
 ) {
-	return await fetcher.put(route, {
+	return await fetcher.put(route, body, {
 		headers: {
 			...headers,
 			"Content-Type": contentType,
-		},
-		data: body,
+		}
 	});
 }
 

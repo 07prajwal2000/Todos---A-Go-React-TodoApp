@@ -3,9 +3,12 @@ import { NavPageRoutes } from "../common/Constants";
 import { Bars2Icon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import useGlobalStore from "../store/global";
 
 const Navbar = () => {
 	const [opened, setOpened] = useState(false);
+	const [profileOpened, setProfileOpened] = useState(false);
+	const { LoggedIn, Profile } = useGlobalStore();
 
 	function onHamburgerClick() {
 		setOpened((p) => !p);
@@ -13,6 +16,17 @@ const Navbar = () => {
 
 	function closeNavbar() {
 		setOpened(false);
+	}
+
+	function AccountButton() {
+		return <div className="col-2">
+			<div className="d-flex position-relative justify-content-center align-items-center cursor-pointer float-end rounded-circle" style={{height: '50px', width: '50px'}}>
+				<img onClick={() => setProfileOpened(p => !p)} width={'50px'} src={`https://ui-avatars.com/api/?background=5452ff&name=${Profile?.FirstName}&rounded=true&bold=true&color=ffff`} alt={Profile?.FirstName} />
+				{profileOpened && <div className="position-absolute mt-2 top-100 bg-white shadow shadow-lg p-4 border border-2 rounded-2">
+					<h2>Menu</h2>
+				</div>}
+			</div>
+		</div>
 	}
 	
 	return (
@@ -40,7 +54,10 @@ const Navbar = () => {
 					))}
 				</div>
 				<div className="col-lg-3 col-md-2"></div>
-				<div className="col-2 d-flex flex-row gap-2">
+				{
+					LoggedIn && <AccountButton />
+				}
+				{!LoggedIn && <div className="col-2 d-flex flex-row gap-2">
 					<Link
 						to={"/auth"}
 						className="btn c-nav-item"
@@ -55,7 +72,7 @@ const Navbar = () => {
 					>
 						Signup
 					</Link>
-				</div>
+				</div>}
 			</div>
 			{/* Mobile navbar */}
 			<div className="row mx-2 z-3 gap-2 justify-content-around d-md-none align-items-center">

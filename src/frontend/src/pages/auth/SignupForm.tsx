@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Toast from "../../common/Toast";
+import { SignupAsync } from "../../api/auth";
 
 type SignupFormType = {
 	FirstName: string;
@@ -18,17 +20,31 @@ const SignupForm = () => {
 		formState: { errors },
 	} = useForm<SignupFormType>();
 
-	function onLoginSubmit(data: SignupFormType) {
-		console.log(data);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+	async function onFormSubmit(data: SignupFormType) {
+    try {
+			setLoading(true);
+			const response = await SignupAsync(data);
+			Toast.Success(response!.Message);
+		} catch (e: any) {
+			handleSubmitErrors(e);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	function handleSubmitErrors(e: any) {
+		if (e?.response?.status >= 500) {
+			Toast.Error(e?.response?.data?.message || "Internal server error");
+		} else if (e?.response?.status >= 400) {
+			Toast.Error(e?.response?.data?.message || "Please check the details you filled.");
+		} else {
+			Toast.Error("Unknown error");
+		}
 	}
 
 	return (
 		<form
-			onSubmit={handleSubmit(onLoginSubmit)}
+			onSubmit={handleSubmit(onFormSubmit)}
 			className="d-flex w-100 px-4 py-4 flex-column gap-3"
 		>
 			<input

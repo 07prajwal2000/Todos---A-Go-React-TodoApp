@@ -1,12 +1,29 @@
-import { Link, useSearchParams } from "react-router-dom";
-import LoginForm from "../../components/LoginForm";
-import SignupForm from "../../components/SignupForm";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import Toast from "../../common/Toast";
+import useGlobalStore from "../../store/global";
+import { useEffect } from "react";
 
 const Auth = () => {
-	const [query, _] = useSearchParams();
+	const { LoggedIn } = useGlobalStore();
+	const nav = useNavigate();
+	const [query] = useSearchParams();
 	const type = query.get("type");
 	const isSignup = type == "signup";
 
+	useEffect(() => {
+		if (LoggedIn) {
+			Toast.Success("Already logged in. Redirecting...");
+			nav("/");
+		}
+	}, [LoggedIn]);
+
+	function googleLogin() {
+		Toast.Default("Google authentication feature needs to developed.");
+	}
+	
 	return (
 		<div>
 			<div className="h-75 p-2 d-flex align-items-center flex-column mx-auto responsive-form">
@@ -31,7 +48,7 @@ const Auth = () => {
         <hr className="w-100" style={{height: '1px'}} />
         <div className="rounded-2 p-2">
           <h5>Continue with</h5>
-          <div className="d-flex flex-row cursor-pointer justify-content-center align-items-center">
+          <div onClick={googleLogin} className="d-flex flex-row cursor-pointer justify-content-center align-items-center">
             <img className="social-btn" src="/google.png" alt="" />
           </div>
         </div>

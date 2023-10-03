@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginAsync } from "../api/login";
-import Toast from "../common/Toast";
+import { LoginAsync } from "../../api/auth";
+import Toast from "../../common/Toast";
+import { LoginResponse } from "../../types/auth";
+import useGlobalStore from "../../store/global";
 
 type LoginFormType = {
 	Email: string;
@@ -13,31 +15,37 @@ const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
 
 const LoginForm = () => {
 	const [loading, setLoading] = useState(false);
+	const { SetTokens, SetLoggedIn } = useGlobalStore();
 	const {
 		handleSubmit,
 		register,
 		formState: { errors },
 	} = useForm<LoginFormType>();
 
-	async function onLoginSubmit(data: LoginFormType) {
+	async function onFormSubmit(data: LoginFormType) {
 		try {
+			setLoading(true);
 			const response = await LoginAsync(data);
 			console.log(response);
-			setLoading(true);
-      Toast.Success("Logged in successfully");
+      handleLoginSuccess(response!);
 		} catch (e: any) {
 			console.log(e);
-      if (e?.response?.status >= 500) Toast.Error("Server error. Please try again later.");
-      else if (e?.response?.status == 404) Toast.Error("Server URL not found");
-      else Toast.Error(e?.response?.data?.message || "Failed to login. Please check your details.");
+      if (e?.response?.status >= 400 && e?.response?.status <= 499) Toast.Error(e?.response?.data?.message || "Failed to login. Please check your details.");
+      else Toast.Error("Server error. Please try again later.");
 		} finally {
 			setLoading(false);
 		}
 	}
 
+	function handleLoginSuccess(response: LoginResponse) {
+		Toast.Success("Logged in successfully");
+		SetTokens(response.AccessToken, response.RefreshToken);
+		SetLoggedIn(true);
+	}
+
 	return (
 		<form
-			onSubmit={handleSubmit(onLoginSubmit)}
+			onSubmit={handleSubmit(onFormSubmit)}
 			className="d-flex w-100 px-4 py-4 flex-column gap-3"
 		>
 			<input

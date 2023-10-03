@@ -3,10 +3,12 @@ package main
 import (
 	"log"
 	"todoapp/common"
+	"todoapp/db"
 	"todoapp/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/spf13/viper"
 )
 
@@ -19,6 +21,7 @@ func main() {
 		return
 	}
 	common.InitializeJwt()
+	db.InitDatabase()
 
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
@@ -27,9 +30,10 @@ func main() {
 		AllowHeaders:     "*",
 		AllowCredentials: true,
 	}))
+	app.Use(recover.New())
 	// app.Use(jwtware.Config{
 	// 	SigningKey: jwtware.SigningKey{Key: []byte(common.GetConfig(common.JwtSecret))},
 	// })
-	routes.RegisterAuthRoute(app)
+	routes.RegisterAuthRoutes(app)
 	app.Listen(":5555")
 }
