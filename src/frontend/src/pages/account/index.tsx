@@ -1,7 +1,15 @@
+import { useEffect } from "react"
+import useGlobalStore, { PageEnum } from "../../store/global";
 
 const Account = () => {
+  const { SetCurrentPage } = useGlobalStore();
+  useEffect(() => {
+    SetCurrentPage(PageEnum.Account);
+  }, []);
   return (
-    <div style={{height: '50vh'}}>Account</div>
+    <div>
+      Account
+    </div>
   )
 }
 

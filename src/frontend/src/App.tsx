@@ -14,6 +14,10 @@ import Account from "./pages/account";
 import Profile from "./pages/account/profile";
 import Settings from "./pages/account/settings";
 import AccountLayout from "./pages/account/accountLayout";
+import Boards from "./pages/account/boards";
+import Billing from "./pages/account/billing";
+import Users from "./pages/account/users";
+import TodoPage from "./pages/account/todopage";
 
 function App() {
 	const { LoadProfile, Tokens, SetLoggedIn } = useGlobalStore();
@@ -45,6 +49,10 @@ function App() {
               <Route element={<Account />} path="" />
               <Route element={<Profile />} path="profile" />
               <Route element={<Settings />} path="settings" />
+              <Route element={<Boards />} path="boards" />
+              <Route element={<Billing />} path="billing" />
+              <Route element={<Users />} path="users" />
+              <Route element={<TodoPage />} path="boards/:id" />
             </Route>
 						<Route element={<Notfound />} path={"*"} />
 					</Routes>

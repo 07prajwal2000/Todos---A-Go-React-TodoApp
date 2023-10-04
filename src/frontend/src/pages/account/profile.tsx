@@ -1,5 +1,5 @@
-import { useState } from "react";
-import useGlobalStore from "../../store/global";
+import { useEffect, useState } from "react";
+import useGlobalStore, { PageEnum } from "../../store/global";
 import { GetPaymentTypeName } from "../../types/auth";
 import { CurrencyDollarIcon } from "@heroicons/react/20/solid";
 
@@ -31,6 +31,11 @@ const Profile = () => {
 	const [fname, setFname] = useState(profile?.FirstName || "");
 	const [lname, setLname] = useState(profile?.LastName || "");
 
+	const { SetCurrentPage } = useGlobalStore();
+  useEffect(() => {
+    SetCurrentPage(PageEnum.Account);
+  }, []);
+
 	if (!profile) {
 		return <LoadingForm />;
 	}
@@ -38,7 +43,7 @@ const Profile = () => {
 		profile;
 
   function saveChanges() {
-    
+    console.log("Submitted: " + fname + " " + lname);
   }
 
 	return (
@@ -48,13 +53,13 @@ const Profile = () => {
 					Profile
 				</h2>
 				<hr />
-				<div className="row px-5 justify-content-between">
+				<div className="row px-md-5 justify-content-between">
 					<div className="col-12 row justify-content-around">
 						<img
-							className="h-75 col-3"
+							className="h-75 d-none d-md-block col-3"
 							src={`https://ui-avatars.com/api/?background=5452ff&name=${FirstName}&bold=true&color=ffff`}
 						/>
-						<div className="col-6">
+						<div className="col-12 col-md-6">
 							<div className="form-group py-2">
 								<label htmlFor="email" className="my-1">
 									Email
@@ -99,9 +104,9 @@ const Profile = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-12 mb-2 row justify-content-around">
+					<div className="col-12 mb-2 row flex-column-reverse flex-md-row justify-content-around">
 						{/* BUTTONS */}
-						<div className="col-5">
+						<div className="col-md-3 col-12">
 							<div className="row border justify-content-center py-2 align-items-center flex-row">
 								<h4 className="col-12 text-center">
 									Subscription Type{" "}
@@ -114,7 +119,7 @@ const Profile = () => {
 									/>{" "}
 									{GetPaymentTypeName(PaymentType)}
 								</h5>
-								<h5 className="my-auto cursor-pointer c-nav-item fw-bold col-4 p-3 bg-info-subtle text-center rounded-2 mx-2">
+								<h5 className="my-auto cursor-pointer c-nav-item fw-bold col-5 p-3 bg-info-subtle text-center rounded-2 mx-2">
 									Change Plan
 								</h5>
 							</div>
@@ -122,7 +127,7 @@ const Profile = () => {
 								save changes
 							</button>
 						</div>
-						<div className="col-6">
+						<div className="col-12 col-md-6">
 							<div className="form-group py-2">
 								<label htmlFor="joinedAt" className="my-1">
 									Joined At

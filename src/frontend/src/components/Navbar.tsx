@@ -8,7 +8,7 @@ import AccountButton from "./AccountMenu";
 
 const Navbar = () => {
 	const [opened, setOpened] = useState(false);
-	const { LoggedIn} = useGlobalStore();
+	const { LoggedIn } = useGlobalStore();
 
 	function onHamburgerClick() {
 		setOpened((p) => !p);
@@ -17,7 +17,7 @@ const Navbar = () => {
 	function closeNavbar() {
 		setOpened(false);
 	}
-	
+
 	return (
 		<div className="container-fluid py-2 bg-white shadow shadow-lg">
 			{/* PC navbar */}
@@ -43,55 +43,86 @@ const Navbar = () => {
 					))}
 				</div>
 				<div className="col-lg-3 col-md-2"></div>
-				{
-					LoggedIn && <AccountButton />
-				}
-				{!LoggedIn && <div className="col-2 d-flex flex-row gap-2">
-					<Link
-						to={"/auth"}
-						className="btn c-nav-item"
-						style={{ fontWeight: "700", fontSize: "1.15rem" }}
-					>
-						Login
-					</Link>
-					<Link
-						to={"/auth?type=signup"}
-						className="btn btn-primary fw-bold"
-						style={{ fontSize: "1rem" }}
-					>
-						Signup
-					</Link>
-				</div>}
+				{LoggedIn && <AccountButton />}
+				{!LoggedIn && (
+					<div className="col-2 d-flex flex-row gap-2">
+						<Link
+							to={"/auth"}
+							className="btn c-nav-item"
+							style={{ fontWeight: "700", fontSize: "1.15rem" }}
+						>
+							Login
+						</Link>
+						<Link
+							to={"/auth?type=signup"}
+							className="btn btn-primary fw-bold"
+							style={{ fontSize: "1rem" }}
+						>
+							Signup
+						</Link>
+					</div>
+				)}
 			</div>
 			{/* Mobile navbar */}
 			<div className="row mx-2 z-3 gap-2 justify-content-around d-md-none align-items-center">
-				<Link onClick={closeNavbar} className="col-6 text-decoration-none text-dark" to={"/"}>
+				<Link
+					onClick={closeNavbar}
+					className="col-6 text-decoration-none text-dark"
+					to={"/"}
+				>
 					<h3 className="user-select-none fw-bold fst-italic">
 						Todo App
 					</h3>
 				</Link>
-				<div className="col-3"></div>
-				<Link onClick={closeNavbar} to={"/auth"} className="col-1 fw-bold btn text-center">
+				<div className="col-1"></div>
+				<Link
+					onClick={closeNavbar}
+					to={"/auth"}
+					className="col-2 fw-bold btn text-center border"
+				>
 					Login
 				</Link>
 				<button
 					onClick={onHamburgerClick}
-					className="btn col-1 c-nav-item"
+					style={{ maxHeight: "40px", maxWidth: '60px' }}
+					className="btn col-2 c-nav-item d-flex justify-content-center align-items-center"
 				>
-					{opened ? <XMarkIcon /> : <Bars2Icon />}
-				</button>
-					{opened && (
-						<div style={{top: '55px'}} className="position-absolute z-2 bottom-0 start-0 end-0 border-2 border bg-white">
-							<div className="d-flex flex-column gap-3 mt-4">
-              {NavPageRoutes.map(x => (
-                <Link onClick={closeNavbar} to={x.url} key={x.name} className="text-center text-decoration-none text-dark">
-                  <h3>{x.name}</h3>
-                </Link>
-              ))}
-              </div>
-              <Link to={"/auth?type=signup"} onClick={closeNavbar} className="btn btn-primary w-100 fw-bold fs-5 mt-5 d-block">Signup</Link>
-						</div>
+					{opened ? (
+						<XMarkIcon
+							style={{ maxHeight: "30px", maxWidth: "40px" }}
+						/>
+					) : (
+						<Bars2Icon
+							style={{ maxHeight: "30px", maxWidth: "40px" }}
+						/>
 					)}
+				</button>
+				{opened && (
+					<div
+						style={{ top: "55px" }}
+						className="position-fixed z-2 bottom-0 start-0 end-0 border-2 border z-3  bg-white h-100"
+					>
+						<div className="d-flex flex-column gap-3 mt-4">
+							{NavPageRoutes.map((x) => (
+								<Link
+									onClick={closeNavbar}
+									to={x.url}
+									key={x.name}
+									className="text-center text-decoration-none text-dark"
+								>
+									<h3>{x.name}</h3>
+								</Link>
+							))}
+						</div>
+						<Link
+							to={"/auth?type=signup"}
+							onClick={closeNavbar}
+							className="btn btn-primary w-100 fw-bold fs-5 mt-5 d-block"
+						>
+							Signup
+						</Link>
+					</div>
+				)}
 			</div>
 		</div>
 	);

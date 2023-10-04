@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { CheckLoggedIn } from "../../api/auth";
 
 const Auth = () => {
-	const { LoggedIn, Tokens: {Access} } = useGlobalStore();
+	const { Tokens: {Access}, SetLoggedIn } = useGlobalStore();
 	const nav = useNavigate();
 	const [query] = useSearchParams();
 	const type = query.get("type");
@@ -17,8 +17,9 @@ const Auth = () => {
 	useEffect(() => {
 		CheckLoggedIn(Access)
 			.then(() => {
+				SetLoggedIn(true);
 				Toast.Success("Already logged in. Redirecting...");
-				nav("/");
+				nav("/account");
 			});
 	}, []);
 

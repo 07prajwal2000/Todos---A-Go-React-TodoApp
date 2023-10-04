@@ -2,43 +2,58 @@ import { create } from "zustand";
 import { UserProfile } from "../types/auth";
 import { GetProfile } from "../api/auth";
 
+export enum PageEnum {
+	None = "none",
+	Account = "account",
+	TodoBoard = "todo_board",
+	Billing = "billing",
+	Users = "users",
+	Settings = "settings",
+}
+
 export type GlobalStoreType = {
+	CurrentPage: PageEnum;
+	SetCurrentPage: (current: PageEnum) => void;
 	Tokens: { Access: string; Refresh: string };
 	SetTokens: (access: string, refresh: string) => void;
-  LoggedIn: boolean;
-  SetLoggedIn: (loggedIn: boolean) => void;
-  Logout: () => void;
-  Profile: UserProfile | undefined;
-  LoadProfile: (token: string) => Promise<boolean>;
+	LoggedIn: boolean;
+	SetLoggedIn: (loggedIn: boolean) => void;
+	Logout: () => void;
+	Profile: UserProfile | undefined;
+	LoadProfile: (token: string) => Promise<boolean>;
 };
 
 const ACCESS_STORAGE_KEY = "access";
 const REFRESH_STORAGE_KEY = "access";
 
 const globalStore = create<GlobalStoreType>((set) => ({
-  Profile: undefined,
-  async LoadProfile(token: string) {
-    try {
-      const response = await GetProfile(token);
-      set((s) => ({...s, Profile: response!}));
-      return true;
-    } catch (error) {
-      return false;
-    }
-  },
-  LoggedIn: false,
-  SetLoggedIn(loggedIn: boolean) {
-    set((s) => ({...s, LoggedIn: loggedIn}));
-  },
-  Logout() {
-    set((s) => ({
-      ...s,
-      Tokens: {Access: "", Refresh: ""},
-      LoggedIn: false,
-    }));
-    localStorage.removeItem(ACCESS_STORAGE_KEY);
-    localStorage.removeItem(REFRESH_STORAGE_KEY);
-  },
+	CurrentPage: PageEnum.None,
+	SetCurrentPage(current: PageEnum) {
+		set((s) => ({ ...s, CurrentPage: current }));
+	},
+	Profile: undefined,
+	async LoadProfile(token: string) {
+		try {
+			const response = await GetProfile(token);
+			set((s) => ({ ...s, Profile: response! }));
+			return true;
+		} catch (error) {
+			return false;
+		}
+	},
+	LoggedIn: false,
+	SetLoggedIn(loggedIn: boolean) {
+		set((s) => ({ ...s, LoggedIn: loggedIn }));
+	},
+	Logout() {
+		set((s) => ({
+			...s,
+			Tokens: { Access: "", Refresh: "" },
+			LoggedIn: false,
+		}));
+		localStorage.removeItem(ACCESS_STORAGE_KEY);
+		localStorage.removeItem(REFRESH_STORAGE_KEY);
+	},
 	Tokens: {
 		Access: localStorage.getItem(ACCESS_STORAGE_KEY) || "",
 		Refresh: localStorage.getItem(REFRESH_STORAGE_KEY) || "",

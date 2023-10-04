@@ -38,7 +38,7 @@ function AccountButton() {
 		closeMenu();
 		Logout();
 		Toast.Default("Logged out successfully");
-		nav('/auth');
+		nav("/auth");
 	}
 
 	return (
@@ -47,14 +47,23 @@ function AccountButton() {
 				className="d-flex position-relative justify-content-center align-items-center float-end rounded-circle"
 				style={{ height: "50px", width: "50px" }}
 			>
-				<img
-					ref={profileBtnRef}
-					onClick={() => setProfileOpened((p) => !p)}
-					width={"50px"}
-					className="cursor-pointer"
-					src={`https://ui-avatars.com/api/?background=5452ff&name=${Profile?.FirstName}&rounded=true&bold=true&color=ffff`}
-					alt={Profile?.FirstName}
-				/>
+				{Profile ? (
+					<img
+						ref={profileBtnRef}
+						onClick={() => setProfileOpened((p) => !p)}
+						width={"50px"}
+						className="cursor-pointer"
+						src={`https://ui-avatars.com/api/?background=5452ff&name=${Profile?.FirstName}&rounded=true&bold=true&color=ffff`}
+						alt={Profile?.FirstName}
+					/>
+				) : (
+					<div
+						style={{ width: "50px", height: "50px" }}
+						className="placeholder-glow"
+					>
+						<div className="placeholder" />{" "}
+					</div>
+				)}
 				{profileOpened && (
 					<div
 						ref={menuRef}

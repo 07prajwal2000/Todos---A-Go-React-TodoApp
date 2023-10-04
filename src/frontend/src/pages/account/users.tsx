@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import useGlobalStore, { PageEnum } from '../../store/global';
 
-const Settings = () => {
+const Users = () => {
   const { SetCurrentPage } = useGlobalStore();
   useEffect(() => {
-    SetCurrentPage(PageEnum.Settings);
+    SetCurrentPage(PageEnum.Users);
   }, []);
   
   return (
-    <div>Settings</div>
+    <div>Users</div>
   )
 }
 
-export default Settings
+export default Users
