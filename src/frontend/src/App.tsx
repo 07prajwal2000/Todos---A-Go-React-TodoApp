@@ -12,45 +12,45 @@ import { useEffect } from "react";
 import { CheckLoggedIn } from "./api/auth";
 import Account from "./pages/account";
 import Profile from "./pages/account/profile";
+import Settings from "./pages/account/settings";
+import AccountLayout from "./pages/account/accountLayout";
 
 function App() {
-  const { LoadProfile, Tokens, SetLoggedIn } = useGlobalStore();
-  
-  useEffect(() => {
-    if (Tokens.Access == "") return;
-    CheckLoggedIn(Tokens.Access)
-      .then(() => {
-        LoadProfile(Tokens.Access);
-        SetLoggedIn(true);
-      });
-  }, [])
-  
-  useEffect(() => {
-    if (Tokens.Access == "") return;
-    LoadProfile(Tokens.Access);
-  }, [Tokens]);
-  
+	const { LoadProfile, Tokens, SetLoggedIn } = useGlobalStore();
+
+	useEffect(() => {
+		if (Tokens.Access == "") return;
+		CheckLoggedIn(Tokens.Access).then(() => {
+			LoadProfile(Tokens.Access);
+			SetLoggedIn(true);
+		});
+	}, []);
+
+	useEffect(() => {
+		if (Tokens.Access == "") return;
+		LoadProfile(Tokens.Access);
+	}, [Tokens]);
+
 	return (
 		<>
 			<BrowserRouter>
 				<Layout>
-          <Routes>
-            <Route element={<Home />} path={"/"} />
-            <Route element={<Auth />} path={"/auth"} />
-            {
-              NavPageRoutes.map(x => (
-                <Route key={x.name} element={x.page} path={x.url} />
-                ))
-              }
-              <Route element={<Notfound />} path={"*"} />
-          </Routes>
-          <Routes>
-            <Route element={<Account />} path="/account" />
-            <Route element={<Profile />} path="/account/profile" />
-          </Routes>
-        </Layout>
+					<Routes>
+						<Route element={<Home />} path={"/"} />
+						<Route element={<Auth />} path={"/auth"} />
+						{NavPageRoutes.map((x) => (
+							<Route key={x.name} element={x.page} path={x.url} />
+						))}
+            <Route path="/account" element={<AccountLayout />}>
+              <Route element={<Account />} path="" />
+              <Route element={<Profile />} path="profile" />
+              <Route element={<Settings />} path="settings" />
+            </Route>
+						<Route element={<Notfound />} path={"*"} />
+					</Routes>
+				</Layout>
 			</BrowserRouter>
-      <Toaster />
+			<Toaster />
 		</>
 	);
 }

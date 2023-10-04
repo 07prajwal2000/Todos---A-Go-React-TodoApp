@@ -4,6 +4,7 @@ import { LoginAsync } from "../../api/auth";
 import Toast from "../../common/Toast";
 import { LoginResponse } from "../../types/auth";
 import useGlobalStore from "../../store/global";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormType = {
 	Email: string;
@@ -15,6 +16,7 @@ const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
 
 const LoginForm = () => {
 	const [loading, setLoading] = useState(false);
+	const nav = useNavigate();
 	const { SetTokens, SetLoggedIn } = useGlobalStore();
 	const {
 		handleSubmit,
@@ -41,6 +43,7 @@ const LoginForm = () => {
 		Toast.Success("Logged in successfully");
 		SetTokens(response.AccessToken, response.RefreshToken);
 		SetLoggedIn(true);
+		nav("/account");
 	}
 
 	return (

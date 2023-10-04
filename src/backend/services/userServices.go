@@ -49,7 +49,7 @@ func SignupUser(userDto *types.SignupDto, data repository.UserRepository) (*resp
 		}, http.StatusBadRequest
 	}
 	hashedPassword := common.HashPassword(userDto.Password)
-	now := time.Now().Unix()
+	now := time.Now().UTC().Unix()
 	user := &types.User{
 		FirstName:   userDto.FirstName,
 		LastName:    userDto.LastName,

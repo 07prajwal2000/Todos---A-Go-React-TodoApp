@@ -12,6 +12,9 @@ export type GlobalStoreType = {
   LoadProfile: (token: string) => Promise<boolean>;
 };
 
+const ACCESS_STORAGE_KEY = "access";
+const REFRESH_STORAGE_KEY = "access";
+
 const globalStore = create<GlobalStoreType>((set) => ({
   Profile: undefined,
   async LoadProfile(token: string) {
@@ -33,15 +36,17 @@ const globalStore = create<GlobalStoreType>((set) => ({
       Tokens: {Access: "", Refresh: ""},
       LoggedIn: false,
     }));
+    localStorage.removeItem(ACCESS_STORAGE_KEY);
+    localStorage.removeItem(REFRESH_STORAGE_KEY);
   },
 	Tokens: {
-		Access: localStorage.getItem("access") || "",
-		Refresh: localStorage.getItem("refresh") || "",
+		Access: localStorage.getItem(ACCESS_STORAGE_KEY) || "",
+		Refresh: localStorage.getItem(REFRESH_STORAGE_KEY) || "",
 	},
 	SetTokens(access, refresh) {
 		set((state) => {
-			localStorage.setItem("access", access);
-			localStorage.setItem("refresh", refresh);
+			localStorage.setItem(ACCESS_STORAGE_KEY, access);
+			localStorage.setItem(REFRESH_STORAGE_KEY, refresh);
 			return {
 				...state,
 				Tokens: { Access: access, Refresh: refresh },

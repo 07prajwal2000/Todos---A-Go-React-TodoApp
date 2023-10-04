@@ -43,7 +43,13 @@ export type UserProfile = {
   FirstName: string;
   LastName: string;
   Email: string;
-  CreatedAt: string;
-  Verified: string;
+  CreatedAt: number;
+  Verified: boolean;
   PaymentType: PaymentType;
 };
+
+export function GetPaymentTypeName(paymentType: PaymentType) {
+  if (paymentType == PaymentType.Free) return "FREE";
+  if (paymentType == PaymentType.Paid) return "PRO";
+  if (paymentType == PaymentType.Enterprise) return "ENTERPRISE";
+}

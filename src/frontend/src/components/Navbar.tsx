@@ -4,11 +4,11 @@ import { Bars2Icon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import useGlobalStore from "../store/global";
+import AccountButton from "./AccountMenu";
 
 const Navbar = () => {
 	const [opened, setOpened] = useState(false);
-	const [profileOpened, setProfileOpened] = useState(false);
-	const { LoggedIn, Profile } = useGlobalStore();
+	const { LoggedIn} = useGlobalStore();
 
 	function onHamburgerClick() {
 		setOpened((p) => !p);
@@ -17,20 +17,9 @@ const Navbar = () => {
 	function closeNavbar() {
 		setOpened(false);
 	}
-
-	function AccountButton() {
-		return <div className="col-2">
-			<div className="d-flex position-relative justify-content-center align-items-center cursor-pointer float-end rounded-circle" style={{height: '50px', width: '50px'}}>
-				<img onClick={() => setProfileOpened(p => !p)} width={'50px'} src={`https://ui-avatars.com/api/?background=5452ff&name=${Profile?.FirstName}&rounded=true&bold=true&color=ffff`} alt={Profile?.FirstName} />
-				{profileOpened && <div className="position-absolute mt-2 top-100 bg-white shadow shadow-lg p-4 border border-2 rounded-2">
-					<h2>Menu</h2>
-				</div>}
-			</div>
-		</div>
-	}
 	
 	return (
-		<div className="container-fluid py-2 shadow shadow-lg mb-4">
+		<div className="container-fluid py-2 bg-white shadow shadow-lg">
 			{/* PC navbar */}
 			<div className="row justify-content-center align-items-center d-md-flex d-none">
 				<Link
@@ -76,12 +65,12 @@ const Navbar = () => {
 			</div>
 			{/* Mobile navbar */}
 			<div className="row mx-2 z-3 gap-2 justify-content-around d-md-none align-items-center">
-				<Link onClick={closeNavbar} className="col-3 text-decoration-none text-dark" to={"/"}>
+				<Link onClick={closeNavbar} className="col-6 text-decoration-none text-dark" to={"/"}>
 					<h3 className="user-select-none fw-bold fst-italic">
 						Todo App
 					</h3>
 				</Link>
-				<div className="col-6"></div>
+				<div className="col-3"></div>
 				<Link onClick={closeNavbar} to={"/auth"} className="col-1 fw-bold btn text-center">
 					Login
 				</Link>

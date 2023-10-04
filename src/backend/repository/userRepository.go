@@ -7,7 +7,7 @@ import (
 	"todoapp/db"
 	"todoapp/types"
 
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5"
 )
 
 type UserRepository interface {
@@ -23,7 +23,11 @@ type UserRepository interface {
 }
 
 type UserPostgresRepository struct {
-	Connection *pgxpool.Pool
+	Connection *pgx.Conn
+}
+
+func (u UserPostgresRepository) CloseConnection() {
+	u.Connection.Close(context.Background())
 }
 
 var errServer = errors.New("server error")
@@ -39,6 +43,7 @@ func CreateUserRepository() (UserRepository, error) {
 
 func (u UserPostgresRepository) GetUserById(id int) *types.User {
 	user := &types.User{}
+	defer u.CloseConnection()
 	row, err := u.Connection.Query(context.Background(), db.UserQueries.UserById, &id)
 	if err != nil {
 		log.Printf("Error: %s", err.Error())
@@ -57,6 +62,7 @@ func (u UserPostgresRepository) GetUserById(id int) *types.User {
 
 func (u UserPostgresRepository) GetUserByEmail(email string) *types.User {
 	user := &types.User{}
+	defer u.CloseConnection()
 	row, err := u.Connection.Query(context.Background(), db.UserQueries.UserByEmail, &email)
 	if err != nil {
 		log.Printf("Error: %s", err.Error())
@@ -74,6 +80,7 @@ func (u UserPostgresRepository) GetUserByEmail(email string) *types.User {
 }
 
 func (u UserPostgresRepository) GetUserCountByEmail(email string) (string, error) {
+	defer u.CloseConnection()
 	rows, err := u.Connection.Query(context.Background(), db.UserQueries.UserDetailsForLogin, &email)
 	if err != nil {
 		log.Printf("Error: %s", err.Error())
@@ -87,6 +94,7 @@ func (u UserPostgresRepository) GetUserCountByEmail(email string) (string, error
 
 // returns id, email, password, blocked, success/failure
 func (u UserPostgresRepository) GetUserDetailsForLogin(email string) (int, string, string, bool, bool) {
+	defer u.CloseConnection()
 	id, dbEmail, password, blocked := -1, "", "", false
 	rows, err := u.Connection.Query(context.Background(), db.UserQueries.UserDetailsForLogin, &email)
 	if err != nil {
@@ -104,11 +112,13 @@ func (u UserPostgresRepository) GetUserDetailsForLogin(email string) (int, strin
 }
 
 func (u UserPostgresRepository) CreateUser(user *types.User) error {
+	defer u.CloseConnection()
 	_, err := u.Connection.Exec(context.Background(), db.UserQueries.InsertUser, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.CreatedAt, &user.PaymentType, &user.Verified)
 	return err
 }
 
 func (u *UserPostgresRepository) UpdateUserById(id int, user *types.User) (*types.User, error) {
+	defer u.CloseConnection()
 	return nil, nil
 }
 

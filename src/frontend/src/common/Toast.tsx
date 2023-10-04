@@ -8,7 +8,7 @@ export default {
 };
 
 const config: Partial<ToastType> = {
-	duration: 4000,
+	duration: 2100,
 	position: "top-right",
 };
 

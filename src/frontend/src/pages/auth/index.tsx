@@ -5,20 +5,22 @@ import SignupForm from "./SignupForm";
 import Toast from "../../common/Toast";
 import useGlobalStore from "../../store/global";
 import { useEffect } from "react";
+import { CheckLoggedIn } from "../../api/auth";
 
 const Auth = () => {
-	const { LoggedIn } = useGlobalStore();
+	const { LoggedIn, Tokens: {Access} } = useGlobalStore();
 	const nav = useNavigate();
 	const [query] = useSearchParams();
 	const type = query.get("type");
 	const isSignup = type == "signup";
 
 	useEffect(() => {
-		if (LoggedIn) {
-			Toast.Success("Already logged in. Redirecting...");
-			nav("/");
-		}
-	}, [LoggedIn]);
+		CheckLoggedIn(Access)
+			.then(() => {
+				Toast.Success("Already logged in. Redirecting...");
+				nav("/");
+			});
+	}, []);
 
 	function googleLogin() {
 		Toast.Default("Google authentication feature needs to developed.");

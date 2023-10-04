@@ -1,7 +1,7 @@
 
 const Account = () => {
   return (
-    <div>Account</div>
+    <div style={{height: '50vh'}}>Account</div>
   )
 }
 
