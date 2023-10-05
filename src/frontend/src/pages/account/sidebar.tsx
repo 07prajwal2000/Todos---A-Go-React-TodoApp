@@ -38,7 +38,7 @@ const sidebarItems = [
 
 const Sidebar = () => {
 	return (
-		<div className="position-fixed sidebar border border-dark-subtle bg-white shadow shadow-sm">
+		<div className="position-fixed d-flex flex-column sidebar border border-dark-subtle bg-white shadow shadow-sm">
 			{sidebarItems.map((x) => (
 				<SidebarItem
 					pageEnum={x.pageEnum}
@@ -79,12 +79,12 @@ const SidebarItem = ({
 		<Link
 			to={url}
 			onClick={() => SetCurrentPage(pageEnum)}
-			className="position-relative text-black-50"
+			className="position-relative text-black-50 z-3"
 		>
 			<div
 				onMouseEnter={() => setHidden(false)}
 				onMouseLeave={() => setHidden(true)}
-				style={{ transition: "all 120ms ease-in-out", width: "60%" }}
+				style={{ transition: "all 120ms ease-in-out", width: "60%", zIndex: '1000' }}
 				className={`mx-auto my-2 p-2 rounded-2 border ${
 					hidden
 						? `${
@@ -103,7 +103,7 @@ const SidebarItem = ({
 					style={{ top: "12%", left: "90%" }}
 				>
 					<h5
-						style={{ fontSize: "1rem" }}
+						style={{ fontSize: "1rem", zIndex: '200' }}
 						className="text-nowrap my-auto"
 					>
 						{text}

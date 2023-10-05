@@ -7,21 +7,36 @@ export enum ToolbarEnum {
 }
 
 type TodoPageStore = {
+  currentTodoBoard: string;
+  setCurrentTodoBoard: (id: string) => void;
+  
+  isEditMode: () => boolean;
+  isViewMode: () => boolean;
   activeTool: ToolbarEnum;
   prevActiveTool: ToolbarEnum;
   setActiveTool: (tool: ToolbarEnum) => void;
+
   toolbarVisible: boolean;
   setToolbarVisible: (visible: boolean) => void;
 };
 
-const useTodoPageStore = create<TodoPageStore>((set) => ({
+const useTodoPageStore = create<TodoPageStore>((set, get) => ({
+  currentTodoBoard: '',
+  setCurrentTodoBoard(id: string) {
+    set((s) => ({
+      ...s,
+      currentTodoBoard: id
+    }));
+  },
   activeTool: ToolbarEnum.Edit,
+  isEditMode: () => get().activeTool == ToolbarEnum.Edit,
+  isViewMode: () => get().activeTool == ToolbarEnum.View,
   prevActiveTool: ToolbarEnum.Edit,
   toolbarVisible: true,
   setActiveTool(tool: ToolbarEnum) {
     set((s) => ({
       ...s,
-      prevActiveTool: tool == ToolbarEnum.Settings ? ToolbarEnum.Edit : s.activeTool,
+      prevActiveTool: s.prevActiveTool == ToolbarEnum.Settings ? ToolbarEnum.Edit : s.activeTool,
       activeTool: tool
     }));
   },

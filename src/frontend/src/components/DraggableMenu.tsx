@@ -1,5 +1,5 @@
 import Draggable from "react-draggable";
-import useTodoPageStore, { ToolbarEnum } from "../store/todoPage";
+import useTodoPageStore, { ToolbarEnum } from "../store/todoPageStore";
 import { ArrowLeftCircleIcon, Cog6ToothIcon, EyeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 
 const DraggableMenu = () => {
@@ -40,13 +40,13 @@ const DraggableMenu = () => {
 
 	return (
 		<Draggable
-			defaultPosition={{ x: 500, y: 0 }}
+			defaultPosition={{ x: 500, y: 10 }}
 			handle="#drag-handle"
 			bounds={{
-				top: -10,
-				bottom: document.documentElement.scrollHeight - 250,
+				top: 10,
+				bottom: document.documentElement.scrollHeight - 150,
 				left: 0,
-				right: document.documentElement.scrollWidth - 400,
+				right: (document.documentElement.scrollWidth - 400) ,
 			}}
 		>
 			<div
@@ -54,15 +54,15 @@ const DraggableMenu = () => {
 					width: '255px',
 					height: "55px",
 				}}
-				className="position-relative d-flex align-items-center"
+				className="position-relative d-flex align-items-center draggable-menutool"
 			>
 				<div
 					style={{
 						width: toolbarVisible ? '255px' : "60px",
 						height: "55px",
-						transition: "width 120ms ease-in-out",
+						transition: "width 120ms cubic-bezier(0.000, 0.960, 0.635, 0.940)",
 					}}
-					className="bg-white overflow-hidden border border-2 d-flex justify-content-around flex-row shadow shadow-lg rounded-2 flex-row align-items-center gap-2 px-5 position-relative"
+					className={`bg-white overflow-hidden border border-2 d-flex justify-content-around flex-row shadow shadow-lg rounded-2 flex-row align-items-center gap-2 ${toolbarVisible ? 'px-5' : 'px-1'} position-relative`}
 				>
 					{toolbarVisible &&
 						toolsButtonData.map((x) => (
