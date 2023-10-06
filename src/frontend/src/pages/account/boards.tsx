@@ -10,10 +10,21 @@ const itemsData = [
 		user: 1,
 		name: "todo 1",
 		desc: "desc 1",
+		totalLists: 2,
 	},
 	{
 		id: parseInt((Math.random() * 100000).toString()),
 		total: 8,
+		available: 8,
+		totalLists: 2,
+		user: 1,
+		name: "todo 1",
+		desc: "desc 1",
+	},
+	{
+		id: parseInt((Math.random() * 100000).toString()),
+		total: 8,
+		totalLists: 2,
 		available: 8,
 		user: 1,
 		name: "todo 1",
@@ -23,6 +34,7 @@ const itemsData = [
 		id: parseInt((Math.random() * 100000).toString()),
 		total: 8,
 		available: 8,
+		totalLists: 2,
 		user: 1,
 		name: "todo 1",
 		desc: "desc 1",
@@ -30,30 +42,7 @@ const itemsData = [
 	{
 		id: parseInt((Math.random() * 100000).toString()),
 		total: 8,
-		available: 8,
-		user: 1,
-		name: "todo 1",
-		desc: "desc 1",
-	},
-	{
-		id: parseInt((Math.random() * 100000).toString()),
-		total: 8,
-		available: 8,
-		user: 1,
-		name: "todo 1",
-		desc: "desc 1",
-	},
-	{
-		id: parseInt((Math.random() * 100000).toString()),
-		total: 8,
-		available: 8,
-		user: 1,
-		name: "todo 1",
-		desc: "desc 1",
-	},
-	{
-		id: parseInt((Math.random() * 100000).toString()),
-		total: 8,
+		totalLists: 2,
 		available: 8,
 		user: 1,
 		name: "todo 1",
@@ -93,7 +82,7 @@ const Boards = () => {
 						key={x.id}
 						TotalCompleted={x.total}
 						TotalAvailable={x.available}
-						Remaining={x.total - x.available}
+						TotalLists={x.totalLists}
 						Description={x.desc}
 						Name={x.name}
 						UserCount={x.user}

@@ -1,12 +1,12 @@
 import TodoList from "./TodoList";
 
-const lists = [5, 3];
+const lists = [2, 2];
 
 const TodoListContainer = () => {
 	return (
 		<div
-			style={{ minHeight: "100%", overflow: "auto" }}
-			className="row flex-nowrap gap-3 justify-content-start overflow-y-auto"
+			style={{ overflow: "auto" }}
+			className="row px-2 list-container mx-auto flex-nowrap gap-3 justify-content-start overflow-y-auto"
 		>
 			{lists.map((x, i) => (
 				<TodoList key={i} Id={i + 1} Total={x} />

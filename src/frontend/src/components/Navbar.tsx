@@ -3,12 +3,12 @@ import { NavPageRoutes } from "../common/Constants";
 import { Bars2Icon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import useGlobalStore from "../store/global";
+import useGlobalStore, { NavbarTypes } from "../store/global";
 import AccountButton from "./AccountMenu";
 
 const Navbar = () => {
 	const [opened, setOpened] = useState(false);
-	const { LoggedIn } = useGlobalStore();
+	const { LoggedIn, NavbarType } = useGlobalStore();
 
 	function onHamburgerClick() {
 		setOpened((p) => !p);
@@ -18,30 +18,40 @@ const Navbar = () => {
 		setOpened(false);
 	}
 
+	function DefaultNavbar() {
+		return <div className="col-lg-3 col-md-3 d-flex flex-row justify-content-around align-items-center">
+		{NavPageRoutes.map((x) => (
+			<Link
+				key={x.name}
+				to={x.url}
+				style={{ cursor: "pointer" }}
+				className="fs-5 text-decoration-none text-dark c-nav-item py-1 px-3 rounded-2"
+			>
+				{x.name}
+			</Link>
+		))}
+	</div>
+	}
+
+	function AccountNavbar() {
+		return <div className="col-1 col-lg-4"></div>
+	}
+
 	return (
 		<div className="container-fluid py-2 bg-white shadow shadow-lg">
 			{/* PC navbar */}
 			<div className="row justify-content-center align-items-center d-md-flex d-none">
 				<Link
 					className="col-lg-2 col-md-3 text-decoration-none text-dark"
-					to={"/"}
+					to={LoggedIn ? '/account' : "/"}
 				>
 					<h3 className="user-select-none fw-bold fst-italic">
 						Todo App
 					</h3>
 				</Link>
-				<div className="col-lg-3 col-md-3 d-flex flex-row justify-content-around align-items-center">
-					{NavPageRoutes.map((x) => (
-						<Link
-							key={x.name}
-							to={x.url}
-							style={{ cursor: "pointer" }}
-							className="fs-5 text-decoration-none text-dark c-nav-item py-1 px-3 rounded-2"
-						>
-							{x.name}
-						</Link>
-					))}
-				</div>
+				{
+					NavbarType == NavbarTypes.Default ? <DefaultNavbar /> : <AccountNavbar />
+				}
 				<div className="col-lg-3 col-md-2"></div>
 				{LoggedIn && <AccountButton />}
 				{!LoggedIn && (

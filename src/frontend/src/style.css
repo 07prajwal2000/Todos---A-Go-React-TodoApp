@@ -30,7 +30,9 @@ body {
 .main-content {
 	padding-top: 50px;
 }
-
+.list-container {
+	max-height: calc(100% - 16vh);
+}
 .board-item {
 	max-width: 400px;
 	min-width: 320px;
@@ -39,7 +41,7 @@ body {
 	transition: all 150ms ease-in-out;
 }
 .todo-viewport {
-	width: calc(100vw - 120px);
+	width: calc(100vw - 50px);
 	height: calc(100vh - 120px);
 }
 .board-item-no-border {
@@ -55,6 +57,9 @@ body {
 	z-index: 50;
 }
 @media screen and (min-width: 770px) {
+	.list-container {
+		max-height: calc(100% - 10vh);
+	}
 	.responsive-form {
 		width: 60%;
 	}
@@ -113,4 +118,21 @@ body {
 }
 .todo-item[contentEditable='true']:hover {
 	border: 1px solid rgb(93, 145, 255);
+}
+.dropdown-item:hover {
+	/* background-color: rgb(214, 227, 255); */
+	background-color: rgb(214, 255, 217);
+	color: initial;
+	cursor: pointer;
+}
+.bg-completed {
+	background-color: rgb(214, 255, 217);
+}
+.dropdown-item-danger:hover {
+	background-color: rgb(250, 207, 207);
+	color: initial;
+	cursor: pointer;
+}
+.todo-option-btn {
+	color: rgb(109, 108, 108);
 }
